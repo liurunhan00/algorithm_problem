@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 2.8)
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "g++")
+project(project_1)
+include_directories(.)
+aux_source_directory(. DIRS)
+add_executable(a.out ${DIRS})

@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project(PROJECT_NAME_RANDOM)
+include_directories(.)
+aux_source_directory(. DIRS)
+add_executable(${PROJECT_NAME} ${DIRS})
