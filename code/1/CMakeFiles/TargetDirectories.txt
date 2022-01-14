@@ -1,3 +1,0 @@
-/home/liurunhan/code/1/CMakeFiles/rebuild_cache.dir
-/home/liurunhan/code/1/CMakeFiles/edit_cache.dir
-/home/liurunhan/code/1/CMakeFiles/a.out.dir
