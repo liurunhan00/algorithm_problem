@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/liurunhan/algorithm_problem/code/20/sliding_window.cpp
+bits/stdc++.h
+-
+sliding_window.h
+/home/liurunhan/algorithm_problem/code/20/sliding_window.h
+
+/home/liurunhan/algorithm_problem/code/20/sliding_window.h
+bits/stdc++.h
+-
+

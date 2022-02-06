@@ -8,5 +8,6 @@ do
 	echo "aux_source_directory($i DIRS)" >> CMakeLists.txt
 done
 echo "add_executable(\${PROJECT_NAME} \${DIRS})" >> CMakeLists.txt
-
+echo "find_package(Threads REQUIRED)" >> CMakeLists.txt
+echo "target_link_libraries(PROJECT_NAME_RANDOM PUBLIC Threads::Threads)" >> CMakeLists.txt
 

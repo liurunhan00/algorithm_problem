@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/PROJECT_NAME_RANDOM.dir/valid_kuohao.cpp.o  -o PROJECT_NAME_RANDOM 

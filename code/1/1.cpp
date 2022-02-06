@@ -25,6 +25,7 @@ int recursive_last_t(int n, int dir, int last_t, int def) {
 int main() {
     int n ;
     cin >> n;
+    last_t(3);
     //cout << recursive_last_t(n, 1, 1, 1) << endl; return 0; 
     int a[] = { 1, 2, 3, 4, 5 };
     cout << sizeof(a) << endl;    

@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+#include <stdexcept>
+#include <vector>
+using namespace std;
+
+// 最长递增子序列
+int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size();
+    int maxl = 1;
+    vector<int> dp(n, 1);
+    for(int i = 0; i < nums.size(); ++i) {
+        for(int j = i + 1; j < nums.size(); ++j) {
+            if(nums[j] > nums[i]) dp[j] = max(dp[j], dp[i] + 1);
+            maxl = max(maxl, dp[j]);
+        }
+    }
+    return maxl;
+}
+// 二分 + dp
+// dp[i]: 所有长度为i + 1的递增子序列中最小的那个序列尾数
+// num > dp[maxL] num放到dp数组尾部 maxL++ 
+// dp[i-1] < num < dp[i] 更新dp[i]
+int lengthOfLIS_binary(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n, 0);
+    int maxL = 0;
+    for(auto &n: nums) {
+        int lo = 0, hi = maxL;
+        while(lo < hi) {
+            int mid = lo + ((hi - lo) >> 1);
+            if(dp[mid] < n) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        dp[lo] = n;
+        // num > dp[hi] 更新
+        if(lo == maxL)
+            maxL++;
+    }
+    return maxL;
+}
+int main() {
+    vector<int> nums = {10,9,2,5,3,7,101,18};
+    cout << lengthOfLIS(nums);
+    cout << '\n';
+    cout << lengthOfLIS_binary(nums);
+    return 0;
+}
