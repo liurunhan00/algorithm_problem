@@ -1,3 +1,0 @@
-/home/liurunhan/algorithm_problem/code/19/Build/CMakeFiles/rebuild_cache.dir
-/home/liurunhan/algorithm_problem/code/19/Build/CMakeFiles/edit_cache.dir
-/home/liurunhan/algorithm_problem/code/19/Build/CMakeFiles/PROJECT_NAME_RANDOM.dir

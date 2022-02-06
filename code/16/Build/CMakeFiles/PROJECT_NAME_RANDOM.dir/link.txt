@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/PROJECT_NAME_RANDOM.dir/Thread.cpp.o  -o PROJECT_NAME_RANDOM  -lpthread 
