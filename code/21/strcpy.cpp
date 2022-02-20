@@ -1,6 +1,11 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+
+// strlen_ 不使用循环实现
+int my_strlen(const char* str) {
+    return *(str++) ? 1 + my_strlen(str): 0;
+}
 char* my_memcpy(char *dest, const char* src, int len) {
     char *ret = dest;
     // 内存重叠从高地址开始复制
@@ -20,7 +25,7 @@ char* my_memcpy(char *dest, const char* src, int len) {
 }
 char* strcpy_(const char* src, char *dest) {
     char* ret = dest;
-    my_memcpy(dest, src, strlen(src) + 1);
+    my_memcpy(dest, src, my_strlen(src) + 1);
     return ret;
 }
 int main() {

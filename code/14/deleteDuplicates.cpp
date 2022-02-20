@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include "deleteDuplicates.h"
 using namespace std;
-
+// 删除重复元素
 ListNode* deleteDuplicates(ListNode* head) {
     ListNode* p = new ListNode(-1);
     ListNode* left, *right;
@@ -17,3 +17,9 @@ ListNode* deleteDuplicates(ListNode* head) {
     }
     return head->next;
 }
+
+
+RandomList* copyRandomList(RandomList *head) {
+    return nullptr;
+}
+

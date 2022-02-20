@@ -31,3 +31,19 @@ public:
     }
 };
 
+// rand7 实现 rand10
+// (rand_N - 1) * M + rand_M ==> [1, X*Y]
+// rand 5 - 1 ==> 0---4 
+// 0---4 * 7 ==> 0 7 14 21 28 
+// 0 7 14 21 28 + rand7 ==> 0---35
+// ---------------------------------
+// 核心是插空
+int rand7() {return (rand() + 1) % 7;}
+int rand10() {
+    int res = 0;
+    while (res < 40) {
+        res = (rand7() - 1) * 7 + rand7();
+    }
+    return res % 10 + 1;
+}
+

@@ -41,10 +41,60 @@ int lengthOfLIS_binary(vector<int>& nums) {
     }
     return maxL;
 }
+// 最长连续数组
+int longestConsecutive(vector<int> &nums) {
+    unordered_set<int> u_set;
+    for (auto& n: nums) u_set.insert(n);
+    int longest = 0;
+    for (auto& n: nums) {
+        if (u_set.erase(n)) {
+            // 左边删除
+            int curlong = 1;
+            int curnum = n;
+            while (u_set.erase(curnum-1)) {
+                curnum--;
+            }
+            curlong += (n - curnum);
+            curnum = n;
+            while (u_set.erase(curnum+1)) {
+                curnum++;
+            }
+            curlong += (curnum - n);
+            longest = max(longest, curlong);
+        }
+    }
+    return longest;
+}
+
+// 最大正方形
+int maximalSquare(vector<vector<char>>& matrix) {
+    // dp[i][j]表示以第i行第j列为右下角所能构成正方形的最大正方形边长
+    // dp[i][j] = 1 + min(dp[i-1][j-1],dp[i-1][j],dp[i][j-1])
+    int m = matrix.size();
+    int n = matrix[0].size();
+    int maxline = 0;
+    vector<vector<int>> dp(m, vector<int>(n, 0));
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (matrix[i][j] == '1') {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = 1 + min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1]));
+                }
+                maxline = max(maxline, dp[i][j]);
+            }
+        }
+    }
+    return maxline;
+}
+
+
 int main() {
     vector<int> nums = {10,9,2,5,3,7,101,18};
     cout << lengthOfLIS(nums);
     cout << '\n';
     cout << lengthOfLIS_binary(nums);
+    cout << '\n' << longestConsecutive(nums) << endl;
     return 0;
 }

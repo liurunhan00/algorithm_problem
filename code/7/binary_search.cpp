@@ -25,5 +25,50 @@ vector<vector<int>> threeSum(vector<int>& nums) {
     for(int i = n - 3; i >= 0; --i) {
         for (int j = i+1; j <= n - 2; ++j) {
     
+        }
+    }
+    return {};
+}
 
+// 狒狒吃香蕉
+// 速度[1, max] 之间 依次二分判断能不能吃完
+int countTime(vector<int>& nums, int h) {
+    int t = 0;
+    for (auto &n: nums) {
+        t += n / h;
+        t += ((n % h) > 0);
+    }
+    return t;
+}
+int minEatingSpeed(vector<int>& nums, int h) {
+    int left = 0, right = *max_element(nums.begin(), nums.end());
+    while (left <= right) {
+        int mid = left + ((right - left) >> 1);
+        if (countTime(nums, mid) <= h) {
+            if (mid == 1 || countTime(nums, mid - 1) > h) {
+                return mid;
+            }
+            right = mid - 1;
+        } 
+        else {
+            left = mid + 1;
+        }
+    }
+    return -1;
+}
 
+// 求平方根
+int mySqrt(int x) {
+    int left = 0, right = x;
+    int res = -1;
+    while (left <= right) {
+        int mid = left + ((right - left) >> 1);
+        if ((long) mid * mid <= x) {
+            left = mid + 1;
+            res = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return res;
+}

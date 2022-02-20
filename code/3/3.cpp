@@ -1,20 +1,18 @@
 #include <string>
 #include <iostream>
 using namespace std;
-
+// 字符串递归增加
 string add(string &s1, string &s2){
     int n1 = s1.size() - 1;//s1的最低位下标
     int n2 = s2.size() - 1;//s2的最低位下标
     int carry = 0;
     string ans;
-
     while(n1 >= 0 || n2 >= 0 || carry > 0){
         int t1 = n1 >= 0 ? s1[n1--] - '0' : 0;
         int t2 = n2 >= 0 ? s2[n2--] - '0' : 0;
         ans += (t1 + t2 + carry) % 10 + '0';//最低位放在最前面
         carry = (t1 + t2 + carry) / 10;//进位：逢10进1
     }
-
     return ans;
 }
 
@@ -47,8 +45,7 @@ bool isAdditiveNumber(string num) {
 
 
 int main() {
-    string v = "";
-    v += "112358";
+    string v = "112358";
     bool flag = isAdditiveNumber(v);
     std::cout << flag << std::endl;
 }

@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include <cctype>
 #include<cstdlib>
 #include <string>
 #include <unordered_set>
@@ -70,6 +71,37 @@ namespace fuyuanIp
         return res;
     }
    
+// 有效的IP地址
+    string checkipv4(string IP) {
+        istringstream in(IP);
+        for (int i = 0; i < 4; ++i) {
+            string piece;
+            getline(in, piece, '.');
+            if (piece.size() > 3 || piece.size() < 1) return "Neither";
+            for (auto &e: piece) if (!isdigit(e)) return "Neither";
+            if (stoi(piece) > 255 || piece.size() > 1 && piece.front() == '0') return "Neither";
+        }
+        return in.eof() ? "IPv4": "Neither";
+    }
+    string checkipv6(string IP) {
+        istringstream in(IP);
+        for (int i = 0; i < 8; ++i) {
+            string piece;
+            getline(in, piece, ':');
+            if (piece.size() > 4 || piece.size() < 1) return "Neither";
+            for (auto &e: piece) {
+                if (!isalnum(e) || isalpha(e) && tolower(e) > 'f') return "Neither";
+            }
+        }
+        return in.eof()? "IPv6": "Neither";
+    }
+    string validIPAddress(string IP) {
+        if (IP.size() > 39 || !isalnum(IP.back())) return "Neither";
+        for (int i = 1; i < 5; ++i) {
+            if (IP[i] == '.') return checkipv4(IP);
+            if (IP[i] == ':') return checkipv6(IP);
+        }
+        return "Neither";
 }
 
 // 含有重复元素集合的组合
@@ -110,12 +142,13 @@ namespace permute {
             if(vis[i] == 0){
                 vis[i] = 1;
                 path.push_back(nums[i]);
-                dfs(nums, vis, start+1);
+                dfs(nums, vis, start);
                 path.pop_back();
                 vis[i] = 0;
             }
         }
     }
+
     vector<vector<int>>& permute(vector<int>& nums){
         vector<int> vis(nums.size(), 0);
         dfs(nums, vis, 0);
@@ -132,22 +165,11 @@ namespace premuteUnique {
             res.emplace_back(nums);
             return;
         }
-        /*
-        unordered_set<int> u_set;
-        for(int i = start; i < nums.size(); ++i){
-            if(u_set.find(nums[i]) != u_set.end()){
-                u_set.insert(nums[i]);
-                swap(nums[i], nums[start]);
-                dfs(nums, start+1);
-                swap(nums[i], nums[start]);
-            }
-        }
-        */
         for(int i = start; i < nums.size(); ++i) {
            if(vis[i] == 1 || (i > 0 && vis[i - 1] == 0 && nums[i] == nums[i - 1])) continue;
            vis[i] = 1;
            path.push_back(nums[i]);
-           dfs(nums, start + 1, vis);
+           dfs(nums, start, vis);
            path.pop_back();
            vis[i] = 0;
         }
