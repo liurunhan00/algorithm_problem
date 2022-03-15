@@ -73,6 +73,26 @@ int maxProduct(vector<string> &words) {
     }
     return res;
 }
+
+// 颜色分类
+// 0, 1, 2排序
+void sortColors(vector<int>& nums) {
+    int lo = 0, hi = nums.size(), zero = 0;
+    // hi ==> 2 zero ==> 0 lo ==> 顺序推进
+    while (lo < hi) {
+        if (nums[lo] == 0) {
+            std::swap(nums[zero], nums[lo]);
+            zero++;
+            lo++;
+        } else if (nums[lo] == 2) {
+            std::swap(nums[lo], nums[hi-1]);
+            hi--;
+        } else {
+           lo++;
+        }
+    }
+}  
+
 int main() {
     vector<int> vec = countBits(5);
     for (auto &v: vec) {

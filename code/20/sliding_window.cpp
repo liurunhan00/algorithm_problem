@@ -44,9 +44,11 @@ int minSubArrayLen(int target, vector<int>& nums) {
 
 bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
     int left = 0, right = k - 1;
-    
+    return false;    
+}
+
 int main() {
-    vector<int> nums = {1,3,-1,-3,5,3,6,7};
+    vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
     auto res = maxSlidWindow(nums, 3);    
     for (auto&r: res) {
         cout << r << endl;

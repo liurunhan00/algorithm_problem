@@ -27,12 +27,31 @@ int maxProfit2(vector<int> &nums) {
     return maxP;
 }
 
-// 买卖3
-// 最多可两次买卖求最大
+// 买卖3 
+// 买卖股票含冷冻期1天 
 int maxProfit3(vector<int> &nums) {
-   return 0; 
+    // f[i][0]: 手上持有股的最大收益
+    // f[i][1]: 手上不持有股票，且处于冷冻期中的最大累计收益
+    // f[i][2]: 手上不持有股票，且不在冷冻期的最大累计收益
+    int n = nums.size();
+    vector<vector<int>> dp(n, vector<int>(3));
+    int f0 = -nums[0];
+    int f1 = 0;
+    int f2 = 0;
+    for (int i = 1; i < n; ++i) 
+    {
+        std::tie(f0, f1, f2) = std::make_tuple(max(f0, f2 - nums[i]),
+                                                   f0 + nums[i],
+                                                   max(f1, f2));
+    }
+    return max(f1, f2);
 }
 
+// 买卖4
+// 最多可两次买卖求最大
+int maxProfit4(vector<int> &nums) {
+   return 0; 
+}
 
 
 
@@ -96,3 +115,23 @@ int rob(vector<int>& nums) {
     dp[nums.size()] = max(dp[nums.size()-1], dp[nums.size()-2]);
     return dp[nums.size()];
 }
+
+// 打家劫舍2
+// 围成一圈 ，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+int rob(vector<int>& nums, int start, int end) {
+    int n = nums.size();
+    vector<int> dp(n, 0);
+    dp[start] = nums[start];
+    dp[start+1] = max(nums[start], nums[start+1]);
+    for (int i = start + 2; i <= end; ++i) {
+        dp[i] = max(dp[i - 2] + nums[i], dp[i - 1]);
+    }
+    return dp[end];
+}
+int robRange(vector<int>& nums) {
+    int n = nums.size();
+    int max1 = rob(nums, 0, n - 2);
+    int max2 = rob(nums, 1, n - 1);
+    return max(max1, max2);
+}
+         

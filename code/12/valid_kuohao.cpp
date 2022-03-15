@@ -3,7 +3,7 @@ using namespace std;
 bool isValid(string t) {
     stack<char> st;
     for(auto &ch: t){
-        if(ch == '(') st.push(')');
+        if     (ch == '(') st.push(')');
         else if(ch == '[') st.push(']');
         else if(ch == '{') st.push('}');
         else if(st.empty() || ch != st.top()) return false;

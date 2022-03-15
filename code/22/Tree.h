@@ -18,8 +18,14 @@ int tree_height(TreeNode* root);
 int diameterOfBinaryTree(TreeNode* root);
 // 验证二叉搜索树
 bool isValidBST(TreeNode* root);
+// 二叉搜索树的后序遍历
+bool verifyPostorder(vector<int>& postorder);
+
 // 根到叶子路径长度
 bool hasPathSum(TreeNode* root, int targetSum);
+// 根到叶节点数字之和
+// 1，3，2 ==> 12 + 13
+int sumNumbers(TreeNode* root);
 // 对称二叉树
 bool isSymmetric(TreeNode* root);
 // 翻转二叉树
@@ -38,3 +44,8 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder);
 // 节点之和的最大路径
 // 后序遍历
 int maxPathSum(TreeNode* root);
+
+
+// 序列化与反序列化二叉树
+string serialize(TreeNode* root);
+TreeNode* deserialize(string data);

@@ -8,7 +8,7 @@ int lengthOfLIS(vector<int>& nums) {
     int n = nums.size();
     int maxl = 1;
     vector<int> dp(n, 1);
-    for(int i = 0; i < nums.size(); ++i) {
+    for(int i = 0; i < nums.size() - 1; ++i) {
         for(int j = i + 1; j < nums.size(); ++j) {
             if(nums[j] > nums[i]) dp[j] = max(dp[j], dp[i] + 1);
             maxl = max(maxl, dp[j]);
@@ -55,6 +55,7 @@ int longestConsecutive(vector<int> &nums) {
                 curnum--;
             }
             curlong += (n - curnum);
+            // 右边删除
             curnum = n;
             while (u_set.erase(curnum+1)) {
                 curnum++;
@@ -66,29 +67,6 @@ int longestConsecutive(vector<int> &nums) {
     return longest;
 }
 
-// 字符串交织
-// s1, s2 能否交织形成s3
-bool isInterleave(string s1, string s2, string s3) {
-    int n1 = s1.size(), n2 = s2.size(), n3 = s3.size();
-    if (n3 != n1 + n2) return false;
-    vector<vector<bool>> dp(n1 + 1, vector<bool>(n2 + 1, 0));
-    dp[0][0] = true;
-    for (int i = 1; i <= n1; ++i) {
-       if (s1[i-1] == s3[i-1]) dp[i][0] = true;
-    } 
-    for (int i = 1; i <= n2; ++i) {
-       if (s2[i-1] == s3[i-1]) dp[0][i] = true;
-    } 
-    for (int i = 1; i <= n1; ++i) {
-        for (int j = 1; j <= n2; ++j) {
-            if (s1[i-1] == s3[i+j-1]) dp[i][j] = dp[i-1][j];
-            if (s2[j-1] == s3[i+j-1]) dp[i][j] = dp[i][j-1]||dp[i][j];
-        }
-    }
-    return dp[n1][n2];
-}
-    
-    
 // 最大正方形
 int maximalSquare(vector<vector<char>>& matrix) {
     // dp[i][j]表示以第i行第j列为右下角所能构成正方形的最大正方形边长

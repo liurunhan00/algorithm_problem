@@ -68,7 +68,6 @@ int findLength(vector<int>& nums1, vector<int>& nums2) {
 }    
 
 // 接雨水
-// 
 int trap(vector<int>& height) {
     int n = height.size();
     vector<int> left(n), right(n);

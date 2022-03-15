@@ -47,6 +47,11 @@ ListNode* sortList(ListNode* head) {
     return mergeSortList(l, r);
 }
 
+// 链表原地排序
+ListNode* sortList_insert(ListNode* head) {
+    if (!head || !head->next) return head;
+    return nullptr;
+}
 ListNode* mergeKLists(vector<ListNode*>& lists) {
     if(lists.size() == 0) return nullptr;
     int n = lists.size();
@@ -75,10 +80,11 @@ ListNode* swapPairs_r(ListNode* head) {
     tmp->next = head;
     return tmp;
 }
+
 ListNode* swapPairs(ListNode* head) {
-    ListNode *flag = new ListNode(0);
-    flag->next = head;
-    ListNode *p1 = flag;
+    ListNode *dummy = new ListNode(0);
+    dummy->next = head;
+    ListNode *p1 = dummy;
     ListNode *p2;
     while(p1->next && p1->next->next) {
         p2 = p1->next;
@@ -87,9 +93,33 @@ ListNode* swapPairs(ListNode* head) {
         p1->next->next = p2;
         p1 = p2;
     }
-    return flag->next;
+    return dummy->next;
 }
 
+ListNode* swapPairs_k(ListNode* head) {
+    int len = 0;
+    ListNode* cur = head;
+    while (cur) {
+        len++;
+        cur = cur->next;
+    }
+    ListNode* dummy = new ListNode(-1);
+    dummy->next = head;
+    ListNode* prev = dummy, *next;
+    for (int i = 0; i < len/2; ++i) {
+       for (int j = 1; j < 2; ++j) {
+            next = cur->next;
+            cur->next = next->next;
+            next->next = prev->next;
+            prev->next = next;
+       }
+       prev = cur;
+       cur = prev->next;
+    }
+    return dummy->next;
+}
+            
+         
 void MergeTwoArray(vector<int> &array, int left, int right, int mid) {
     vector<int> tmp(right - left + 1, 0);
     int i = left, j = mid + 1, k = 0;
@@ -178,6 +208,25 @@ ListNode* reverse_list_etc(ListNode* head) {
     }
     return prev->next;
 }
+// 给定区间内翻转
+ListNode* reverseBetween(ListNode* head, int left, int right) {
+    if (!head || !head->next) return nullptr;
+    ListNode* dummy = new ListNode(-1);
+    dummy->next = head;
+    ListNode* cur = head, *prev = dummy, *next;
+    for (int i = 1; i < left; ++i) {
+        prev = prev->next;
+    }
+    cur = prev->next;
+    for (int i = left; i < right; ++i) {
+        next = cur->next;
+        cur->next = next->next;
+        next->next = prev->next;
+        prev->next = next;
+    }
+    return dummy->next;
+}
+
 // k个一组翻转链表
 ListNode* reverseKGroup(ListNode* head, int k) {
     if (!head || !head->next) return nullptr;
@@ -190,7 +239,7 @@ ListNode* reverseKGroup(ListNode* head, int k) {
     }
     head = dummy->next;
     for (int i = 0; i < len/k; ++i) {
-        for (int j = 0; j < k - 1; ++j) {
+        for (int j = 1; j < k; ++j) {
             next = cur->next;
             cur->next = next->next;
             next->next = prev->next;

@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <future>
 #include <ios>
 #include "Tree.h"
 // zc | 折叠 zo | 展开折叠
@@ -7,19 +8,17 @@ void Pre_order_iter(TreeNode* root) {
     if (!root) return;
     stack<TreeNode*> st;
     st.push(root);
+    TreeNode* p = root;
     while (!st.empty()) {
-        TreeNode* top = st.top();
-        std::cout << top->val << " ";
+        p = st.top();
         st.pop();
-        if (top->right) st.push(top->right);
-        while (top->left) {
-            top = top->left;
-            if (top->right) st.push(top->right);
-            std::cout << top->val << " ";
-        }
+        cout << p->val << ' ';
+        if (p->right) st.push(p->right);
+        if (p->left) st.push(p->left);
     }
     std::cout << std::endl;
 }
+
 void  In_order_iter(TreeNode* root) {
     if (!root) return;
     stack<TreeNode*> st;
@@ -39,26 +38,27 @@ void  In_order_iter(TreeNode* root) {
     std::cout << std::endl;
 }
 
-void  Po_order_iter(TreeNode* root) {
+void Po_order_iter(TreeNode* root) {
+    // 双栈实现
+    // 根左右 === 左右根
     if (!root) return;
-    stack<TreeNode*> st;
-    TreeNode* cur;
-    TreeNode* pre = nullptr;
-    st.push(root);
-    while (!st.empty()) {
-        // 思路：子节点若都访问过|子节点为空 则可访问 
-        cur = st.top();
-        if ((cur->left == nullptr && cur->right == nullptr) ||
-            (pre &&(pre != cur->left || pre != cur->right))) {
-            std::cout << cur->val << " ";
-            st.pop();
-            pre = cur;
-        } else {
-            if (cur->right) st.push(cur->right);
-            if (cur->left) st.push(cur->left);
-        }
+    stack<TreeNode*> s1;
+    stack<TreeNode*> s2;
+    s1.push(root);
+    TreeNode* p = root;
+    while (!s1.empty()) {
+        p = s1.top();
+        s1.pop();
+        s2.push(p);
+        if (p->left) s1.push(p->left);
+        if (p->right) s1.push(p->right);
     }
-    std::cout << std::endl;
+    while (!s2.empty()) {
+        p = s2.top();
+        cout << p->val << ' ';
+        s2.pop();
+    }
+    cout << endl;
 }
 
 int tree_height(TreeNode *root) {
@@ -101,7 +101,7 @@ static bool hasPathflag = false;
 void dfs_has_path(TreeNode *root, int targetSum) {
     if (!root) return; 
     if (root->left == nullptr && root->right == nullptr) {
-        if ( root->val == targetSum) {
+        if (root->val == targetSum) {
             hasPathflag = true;
         } 
         return;
@@ -115,6 +115,18 @@ bool hasPathSum(TreeNode *root, int targetSum) {
     hasPathflag = false;
     dfs_has_path(root, targetSum); 
     return hasPathflag;
+}
+
+// 根到叶子路径之和
+// 自顶向下
+int sumNumbers_dfs(TreeNode* root, int sum) {
+    if (!root) return 0;
+    if (!root->left && !root->right) return root->val + sum*10;
+    return sumNumbers_dfs(root->left, root->val + 10*sum) 
+        + sumNumbers_dfs(root->left, root->val + 10*sum);
+} 
+int sumNumbers(TreeNode *root) {
+    return sumNumbers_dfs(root, 0);
 }
 
 // 镜像二叉树
@@ -132,8 +144,6 @@ void dfs_isSymmetric(TreeNode *root1, TreeNode *root2) {
     dfs_isSymmetric(root1->left, root2->right);
     dfs_isSymmetric(root1->right, root2->left);
 }
-
-    
 bool isSymmetric(TreeNode *root) {
     Symmet_flag = true;
     dfs_isSymmetric(root, root);
@@ -156,7 +166,6 @@ TreeNode* invertTree_pre_iter(TreeNode* root) {
         TreeNode *node = st.top();
         st.pop();
         swap(node->left, node->right);
-        // node->left 放前面也行
         if (node->right) st.push(node->right);
         if (node->left) st.push(node->left);
     }
@@ -168,7 +177,6 @@ TreeNode* invertTree_in_re(TreeNode* root) {
     if (!root) return root;
     invertTree_in_re(root->left);
     swap(root->left, root->right);
-    // 左右交换已经完成了所以还是left
     invertTree_in_re(root->left);
     return root;
 }
@@ -198,6 +206,7 @@ TreeNode* invertTree_bfs(TreeNode* root) {
     return root;
 }
 
+// 判断完全二叉树
 // 遇到空节点后在遇到非空即为false
 // 第一次遇到push empty node
 // 的题目
@@ -264,6 +273,7 @@ void treeToDoublyList_dfs(TreeNode* root) {
     treeToDouble_prev = root;
     treeToDoublyList_dfs(root->right);
 }
+
 TreeNode* treeToDoublyList(TreeNode* root) {
     if (!root) return nullptr;
     treeToDoublyList_dfs(root);
@@ -328,6 +338,27 @@ TreeNode* convertBST(TreeNode* root) {
     convertBST(root->left);
     return root;
 }
+// 输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。
+bool verifyPistorder_dfs(vector<int>& postorder, int left, int right) {
+    if (left >= right) return true;
+    int index = 0; // 数组中第一个大于根节点值的下标
+    int root = postorder[right];
+    while (postorder[index++] < postorder[root]) ;
+    int tmp = index + 1;
+    while (tmp < right) { // 右子树若有小于根的则出错
+        if (postorder[tmp++] < root) {
+            return false;
+        }
+    }
+    return verifyPistorder_dfs(postorder, left, index - 1) &&
+        verifyPistorder_dfs(postorder, index, right - 1);
+}
+bool verifyPostorder(vector<int>& postorder) {
+    // 后序==> 左右根
+    // 左 < 右 < 根 
+    return verifyPistorder_dfs(postorder, 0, postorder.size() - 1);
+}
+
 
 // 节点之和最大的路径
 static int maxPathsum = INT_MIN;
@@ -345,6 +376,56 @@ int maxPathSum(TreeNode* root) {
     return maxPathsum;
 }
 
-// 
+// 序列化与反序列化二叉树
+string serialize(TreeNode* root) {
+    // bfs
+    if (!root) return "";
+    queue<TreeNode*> q;
+    q.push(root);
+    string res;
+    while (!q.empty()) {
+        TreeNode *tmp = q.front();
+        q.pop();
+        if (tmp == nullptr) {
+            res += "#,";
+        } else {
+            res += to_string(tmp->val) + ',';
+            q.push(tmp->left);
+            q.push(tmp->right);
+        }
+    }
+    res.pop_back();        
+    return res;
+}
 
 
+TreeNode* deserialize(string data) {
+    if (data.size() == 0) return nullptr;
+    vector<TreeNode*> tree;
+    int idx = 0;
+    while(idx < data.size()){
+        string s = "";
+        while(data[idx] != ','){
+            s += data[idx];
+            idx++;
+        }
+        if(s == "#"){
+            tree.push_back(nullptr);
+        }
+        else{
+            int t = atoi(s.c_str());
+            TreeNode* node  = new TreeNode(t);
+            tree.push_back(node);
+        }
+        idx++;
+    }
+    int pos = 1;
+    for(int i = 0; i < tree.size(); i++){
+        if(tree[i] == nullptr){
+            continue;
+        }
+        tree[i]->left = tree[pos++];
+        tree[i]->right = tree[pos++];
+    }
+    return tree[0];
+}

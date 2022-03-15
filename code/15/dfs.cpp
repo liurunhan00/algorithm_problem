@@ -1,45 +1,46 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #include <cctype>
-#include<cstdlib>
+#include <cstdlib>
 #include <string>
 #include <unordered_set>
 #include <vector>
 using namespace std;
 
 // 分割回文子字符串
-bool par_is_vali(string s, int x, int i){
-    while(x < i) {
-        if(s[x++] != s[i--]) {
-            return false;
+namespace partition_str {
+    bool par_is_vali(string s, int x, int i){
+        while(x < i) {
+            if(s[x++] != s[i--]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void par_dfs(string s,int x, vector<vector<string>> &res, vector<string> &path){
+        if(x >= s.size()){
+            res.push_back(path);
+        }
+        for(int i = x; i < s.size(); ++i) {
+            if(par_is_vali(s, x, i)){
+                path.push_back(s.substr(x, i - x + 1));
+                par_dfs(s, i+1, res, path);
+                path.pop_back();
+            }
         }
     }
-    return true;
-}
-void par_dfs(string s,int x, vector<vector<string>> &res, vector<string> &path){
-    if(x >= s.size()){
-        res.push_back(path);
-    }
-    for(int i = x; i < s.size(); ++i) {
-        if(par_is_vali(s, x, i)){
-            path.push_back(s.substr(x, i - x + 1));
-            par_dfs(s, i+1, res, path);
-            path.pop_back();
-        }
+
+    vector<vector<string>> partition(string s) 
+    {
+        vector<vector<string>> res;
+        vector<string> path;
+        par_dfs(s,0,res,path);
+        return res;
     }
 }
-
-
-vector<vector<string>> partition(string s) 
-{
-    vector<vector<string>> res;
-    vector<string> path;
-    par_dfs(s,0,res,path);
-    return res;
-}
-
 
 // 复原IP
-namespace fuyuanIp
+namespace restoreIp
 {
     vector<string> res;
     string path;
@@ -56,7 +57,6 @@ namespace fuyuanIp
             }
             return;
         }
-        if(cnt > 3) return;
         string str = "";
         for(int i = strat_i; i < strat_i + 3 && i < s.size(); ++i) {
             str += s[i];
@@ -102,6 +102,7 @@ namespace fuyuanIp
             if (IP[i] == ':') return checkipv6(IP);
         }
         return "Neither";
+    }
 }
 
 // 含有重复元素集合的组合
@@ -138,6 +139,7 @@ namespace permute {
         if(nums.size() == path.size()) {
             res.push_back(path);
         }
+        // start 不变就是表示可以继续从nums[start] 开始
         for(int i = start; i < nums.size(); ++i) {
             if(vis[i] == 0){
                 vis[i] = 1;
@@ -166,6 +168,7 @@ namespace premuteUnique {
             return;
         }
         for(int i = start; i < nums.size(); ++i) {
+            // vis = 0 ==> 拒绝横轴 | =1 ==> 拒绝纵轴
            if(vis[i] == 1 || (i > 0 && vis[i - 1] == 0 && nums[i] == nums[i - 1])) continue;
            vis[i] = 1;
            path.push_back(nums[i]);
@@ -173,8 +176,6 @@ namespace premuteUnique {
            path.pop_back();
            vis[i] = 0;
         }
-
-
     }
     vector<vector<int>>& premuteUnique(vector<int>& nums){
         vector<int> vis(nums.size(), 0);
@@ -183,3 +184,25 @@ namespace premuteUnique {
         return res;
     }
 }
+// 子集 
+namespace subsets{
+    vector<int> path;
+    vector<vector<int>> res;
+    void dfs(vector<int> &nums, int start) {
+        if(nums.size() <= path.size()) {
+            res.push_back(path);
+        }
+        if(nums.size() > path.size()) return;
+        for(int i = start; i < nums.size(); ++i) {
+                path.push_back(nums[i]);
+                dfs(nums, start+1);
+                path.pop_back();
+        }
+    }
+    vector<vector<int>> subsets(vector<int>& nums){
+        vector<int> vis(nums.size(), 0);
+        dfs(nums, 0);
+        return res;
+    }
+}
+
