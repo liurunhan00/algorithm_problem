@@ -1,2 +1,2 @@
-find . -name "Build" | xargs rm -rf;
+find . -name "build" | xargs rm -rf;
 
